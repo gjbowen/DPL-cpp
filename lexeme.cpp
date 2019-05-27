@@ -25,7 +25,7 @@ enum lexeme_type : short{
 	PRINT,
 	PRINTLN,
 	REAL,
-	SEMICOLON,
+	SEMI,
 	STRING,
 	TIMES,
 	UNKNOWN,
@@ -35,8 +35,8 @@ enum lexeme_type : short{
 	WHILE,
 	IF,
 	ELSE,
-	PLUSPLUS,
-	MINUSMINUS,
+	INCREMENT_ONE,
+	DECREMENT_ONE,
 	POWER,
 	DOT,
 	NOT,
@@ -45,8 +45,13 @@ enum lexeme_type : short{
 	RETURN,
 	ANYTHING,
 	PROGRAM,
-	FUNCTION,
-	FUNCTION_GLUE
+	FUNCTION_GLUE,
+	PARAMS,
+	INCREMENT,
+	DECREMENT,
+	FUNCTION_CALL,
+	BLOCK,
+	ARGS
 };
 
 string Lexeme::type_to_string(){
@@ -74,7 +79,7 @@ string Lexeme::type_to_string(){
 		case 20: return "PRINT";
 		case 21: return "PRINTLN";
 		case 22: return "REAL";
-		case 23: return "SEMICOLON";
+		case 23: return "SEMI";
 		case 24: return "STRING";
 		case 25: return "TIMES";
 		case 26: return "UNKNOWN";
@@ -93,8 +98,11 @@ string Lexeme::type_to_string(){
 		case 39: return "RETURN";
 		case 40: return "ANYTHING";
 		case 41: return "PROGRAM";
-		case 42: return "FUNCTION";
-		case 43: return "FUNCTION_GLUE";
+		case 42: return "FUNCTION_GLUE";
+		case 43: return "PARAMS";
+		case 44: return "FUNCTION_CALL";
+		case 45: return "BLOCK";
+		case 46: return "ARGS";
 	}
 }
 Lexeme::Lexeme(){}

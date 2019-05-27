@@ -91,7 +91,7 @@ void skipWhiteSpace() {
 			case ':': return new Lexeme(COLON,lineNumber);
 			case '*': return new Lexeme(TIMES,lineNumber);
 			case '/': return new Lexeme(DIVIDE,lineNumber);
-			case ';': return new Lexeme(SEMICOLON,lineNumber);
+			case ';': return new Lexeme(SEMI,lineNumber);
 			case '^': return new Lexeme(POWER,lineNumber);
 			
 			default:
@@ -104,7 +104,9 @@ void skipWhiteSpace() {
 			{
 				getChar();
 				if(ch=='+')
-					return new Lexeme(PLUSPLUS,lineNumber);
+					return new Lexeme(INCREMENT_ONE,lineNumber);
+				else if(ch=='=')
+					return new Lexeme(INCREMENT,lineNumber);
 				else{
 					pushBack();
 					return new Lexeme(PLUS,lineNumber);
@@ -114,7 +116,9 @@ void skipWhiteSpace() {
 			{
 				getChar();
 				if(ch=='-')
-					return new Lexeme(MINUSMINUS,lineNumber);
+					return new Lexeme(DECREMENT_ONE,lineNumber);
+				if(ch=='=')
+					return new Lexeme(DECREMENT,lineNumber);
 				else{
 					pushBack();
 					return new Lexeme(MINUS,lineNumber);

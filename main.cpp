@@ -18,18 +18,10 @@ int main(int argc, char *args[]){
 	myfile.open("example.txt");
 	getNextLine();
 	print_green("--------------------------------------");
- 	Lexeme* token = new Lexeme();
- 	Lexeme* tree = new Lexeme();
-
-	while (token->type != END_OF_FILE) 
-	{ 
-		token = lex();
-		cons(tree,NULL,token);
-		//tree=tree->right;
-		token->display(); 
-	} 
-	myfile.close();
-	print_green("--------------------------------------");
+	Lexeme* tree = parse();
 	showTree(tree);
+	print_green("--------------------------------------");
+	myfile.close();
+	
 	return 0;
 }
