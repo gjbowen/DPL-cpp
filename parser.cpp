@@ -161,11 +161,6 @@ Lexeme* expr(){
 }
 
 
-Lexeme* unary(){
-	if(unaryPending())
-		return advance();
-	return NULL;
-}
 bool unaryPending(){
 	return 
 	check(VARIABLE) ||
@@ -175,19 +170,43 @@ bool unaryPending(){
 	check(BOOLEAN) 	||
 	check(CHARACTER);
 }
+Lexeme* unary(){
+	if(unaryPending())
+		return advance();
+	return NULL;
+}
 ///////////////////////////////////////////////
 bool opPending() {
-	return check(PLUS)		||
-			check(MINUS)	||
-			check(TIMES)	||
-			check(DIVIDE)	||
-			check(POWER);
+	return check(PLUS)	||
+	check(MINUS)	||
+	check(TIMES)	||
+	check(DIVIDE)	||
+	check(POWER);
 }
 Lexeme* op() {
 	return advance();
 }
 
-
+//////////////////////////////////////////////////////////////
+bool compoundPending() {
+	return check(AND) || check(OR);
+}
+Lexeme* compound() {
+	return match(current->type);
+}
+//////////////////////////////////////////////////////////////
+bool equalityPending() {
+	return 
+	check(EQUAL)				||
+	check(NOT_EQUAL)			||
+	check(GREATER_THAN)			||
+	check(GREATER_THAN_EQUAL)	||
+	check(LESS_THAN)			||
+	check(LESS_THAN_EQUAL);
+}
+Lexeme* equality() {
+	return match(current->type);
+}
 //////////////////////////////////////////////////////////////
 bool incrementOnePending() {
 	return check(INCREMENT_ONE);

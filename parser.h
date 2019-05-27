@@ -34,6 +34,10 @@ Lexeme* decrementOne();
 bool incrementPending();
 bool decrementPending();
 
+bool compoundPending();
+Lexeme* compound();
+bool equalityPending();
+Lexeme* equality();
 //////////////////////////
 Lexeme* parse();
 Lexeme* advance();

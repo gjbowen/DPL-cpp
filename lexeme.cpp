@@ -51,7 +51,10 @@ enum lexeme_type : short{
 	DECREMENT,
 	FUNCTION_CALL,
 	BLOCK,
-	ARGS
+	ARGS,
+	OR,
+	AND,
+	NOT_EQUAL
 };
 
 string Lexeme::type_to_string(){
@@ -103,6 +106,9 @@ string Lexeme::type_to_string(){
 		case 44: return "FUNCTION_CALL";
 		case 45: return "BLOCK";
 		case 46: return "ARGS";
+		case 47: return "OR";
+		case 48: return "AND";
+		case 49: return "NOT_EQUAL";
 	}
 }
 Lexeme::Lexeme(){}
