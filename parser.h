@@ -23,6 +23,17 @@ bool unaryPending();
 
 bool opPending();
 Lexeme* op();
+Lexeme* conditionExpr();
+
+bool ifStatementPending();
+Lexeme* ifStatement();
+bool optElsePending();
+Lexeme* optElseStatement();
+
+bool whileStatementPending();
+Lexeme* whileStatement();
+bool forStatementPending();
+Lexeme* forStatement();
 
 bool varExprPending();
 Lexeme* varExpr();
@@ -46,8 +57,5 @@ bool check(lexeme_type type);
 void matchNoAdvance(lexeme_type type);
 void showTree(Lexeme* tree);
 
-//add to helper
-Lexeme* cons(lexeme_type t,Lexeme* left,Lexeme* right);
-Lexeme* cons(Lexeme* main,Lexeme* left,Lexeme* right);
 
 #endif

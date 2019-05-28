@@ -27,6 +27,18 @@ compile:
 run:
 	./main.out
 
+tokens:
+	g++ ./main.cpp -o main.out
+	clear
+	./main.out tokens
+token:
+	$(tokens)
+	
+tree:
+	g++ ./main.cpp -o main.out
+	clear
+	./main.out tree
+
 # Removes all .out files
 #
 clean: 

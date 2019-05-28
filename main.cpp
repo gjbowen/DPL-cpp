@@ -14,12 +14,32 @@ int lineNumber=0;
 #include "lexer.cpp"
 #include "parser.cpp"
 
+
+
+
 int main(int argc, char *args[]){
 	myfile.open("example.txt");
 	getNextLine();
 	print_green("--------------------------------------");
-	Lexeme* tree = parse();
-	showTree(tree);
+	if(argc>1){
+		string mode (args[1]);
+		print_red("MODE: " + mode);
+		Lexeme* lexeme = new Lexeme();
+		if(mode=="tokens"){
+			while(lexeme->type!=END_OF_FILE){
+				lexeme=lex();
+				lexeme->display();
+			}
+		}
+		else if(mode=="tree"){
+			lexeme = parse();
+			showTree(lexeme);
+		}
+		else if(mode=="tree"){
+			lexeme = parse();
+			//showTree(lexeme);
+		}
+	}
 	print_green("--------------------------------------");
 	myfile.close();
 	

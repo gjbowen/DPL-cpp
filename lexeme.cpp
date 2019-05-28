@@ -2,113 +2,176 @@
 #include "lexeme.h"	//
 //////////////////////
 enum lexeme_type : short{
+	AND,
+	ANYTHING,
+	ARGS,
 	ASSIGN,
+	BLOCK,
 	BOOLEAN,
 	CHARACTER,
+	CLOSE_BRACE,
 	CLOSE_BRACKET,
 	CLOSE_PAREN,
 	COLON,
 	COMMA,
-	FUNCTION,
+	DECREMENT,
+	DECREMENT_ONE,
 	DIVIDE,
+	DOT,
+	ELSE,
 	END_OF_FILE,
 	EQUAL,
+	FOR,
+	FUNCTION,
+	FUNCTION_CALL,
+	FUNCTION_GLUE,
+	GLUE,
 	GREATER_THAN,
 	GREATER_THAN_EQUAL,
+	IF,
+	INCREMENT,
+	INCREMENT_ONE,
 	INTEGER,
 	LESS_THAN,
 	LESS_THAN_EQUAL,
 	MINUS,
+	NOT,
+	NOT_EQUAL,
+	OPEN_BRACE,
 	OPEN_BRACKET,
 	OPEN_PAREN,
+	OR,
+	PARAMS,
 	PLUS,
+	POWER,
 	PRINT,
 	PRINTLN,
+	PROGRAM,
 	REAL,
+	RETURN,
 	SEMI,
 	STRING,
 	TIMES,
 	UNKNOWN,
 	VARIABLE,
-
-	FOR,
-	WHILE,
-	IF,
-	ELSE,
-	INCREMENT_ONE,
-	DECREMENT_ONE,
-	POWER,
-	DOT,
-	NOT,
-	OPEN_BRACE,
-	CLOSE_BRACE,
-	RETURN,
-	ANYTHING,
-	PROGRAM,
-	FUNCTION_GLUE,
-	PARAMS,
-	INCREMENT,
-	DECREMENT,
-	FUNCTION_CALL,
-	BLOCK,
-	ARGS,
-	OR,
-	AND,
-	NOT_EQUAL
+	WHILE
 };
-
+string index_to_string(int index){
+	switch(index){
+		case 0: return "AND";
+		case 1: return "ANYTHING";
+		case 2: return "ARGS";
+		case 3: return "ASSIGN";
+		case 4: return "BLOCK";
+		case 5: return "BOOLEAN";
+		case 6: return "CHARACTER";
+		case 7: return "CLOSE_BRACE";
+		case 8: return "CLOSE_BRACKET";
+		case 9: return "CLOSE_PAREN";
+		case 10: return "COLON";
+		case 11: return "COMMA";
+		case 12: return "DECREMENT";
+		case 13: return "DECREMENT_ONE";
+		case 14: return "DIVIDE";
+		case 15: return "DOT";
+		case 16: return "ELSE";
+		case 17: return "END_OF_FILE";
+		case 18: return "EQUAL";
+		case 19: return "FOR";
+		case 20: return "FUNCTION";
+		case 21: return "FUNCTION_CALL";
+		case 22: return "FUNCTION_GLUE";
+		case 23: return "GLUE";
+		case 24: return "GREATER_THAN";
+		case 25: return "GREATER_THAN_EQUAL";
+		case 26: return "IF";
+		case 27: return "INCREMENT";
+		case 28: return "INCREMENT_ONE";
+		case 29: return "INTEGER";
+		case 30: return "LESS_THAN";
+		case 31: return "LESS_THAN_EQUAL";
+		case 32: return "MINUS";
+		case 33: return "NOT";
+		case 34: return "NOT_EQUAL";
+		case 35: return "OPEN_BRACE";
+		case 36: return "OPEN_BRACKET";
+		case 37: return "OPEN_PAREN";
+		case 38: return "OR";
+		case 39: return "PARAMS";
+		case 40: return "PLUS";
+		case 41: return "POWER";
+		case 42: return "PRINT";
+		case 43: return "PRINTLN";
+		case 44: return "PROGRAM";
+		case 45: return "REAL";
+		case 46: return "RETURN";
+		case 47: return "SEMI";
+		case 48: return "STRING";
+		case 49: return "TIMES";
+		case 50: return "UNKNOWN";
+		case 51: return "VARIABLE";
+		case 52: return "WHILE";
+		default:
+		return "TYPE_NOT_MADE!";
+	}
+}
 string Lexeme::type_to_string(){
 	switch(type){
-		case 0: return "ASSIGN";
-		case 1:	return "BOOLEAN";
-		case 2:	return "CHARACTER";
-		case 3:	return "CLOSE_BRACKET";
-		case 4:	return "CLOSE_PAREN";
-		case 5:	return "COLON";
-		case 6:	return "COMMA";
-		case 7:	return "FUNCTION";
-		case 8:	return "DIVIDE";
-		case 9:	return "END_OF_FILE";
-		case 10: return "EQUAL";
-		case 11: return "GREATER_THAN";
-		case 12: return "GREATER_THAN_EQUAL";
-		case 13: return "INTEGER";
-		case 14: return "LESS_THAN";
-		case 15: return "LESS_THAN_EQUAL";
-		case 16: return "MINUS";
-		case 17: return "OPEN_BRACKET";
-		case 18: return "OPEN_PAREN";
-		case 19: return "PLUS";
-		case 20: return "PRINT";
-		case 21: return "PRINTLN";
-		case 22: return "REAL";
-		case 23: return "SEMI";
-		case 24: return "STRING";
-		case 25: return "TIMES";
-		case 26: return "UNKNOWN";
-		case 27: return "VARIABLE";
-		case 28: return "FOR";
-		case 29: return "WHILE";
-		case 30: return "IF";
-		case 31: return "ELSE";
-		case 32: return "PLUSPLUS";
-		case 33: return "MINUSMINUS";
-		case 34: return "POWER";
-		case 35: return "DOT";
-		case 36: return "NOT";
-		case 37: return "OPEN_BRACE";
-		case 38: return "CLOSE_BRACE";
-		case 39: return "RETURN";
-		case 40: return "ANYTHING";
-		case 41: return "PROGRAM";
-		case 42: return "FUNCTION_GLUE";
-		case 43: return "PARAMS";
-		case 44: return "FUNCTION_CALL";
-		case 45: return "BLOCK";
-		case 46: return "ARGS";
-		case 47: return "OR";
-		case 48: return "AND";
-		case 49: return "NOT_EQUAL";
+		case 0: return "AND";
+		case 1: return "ANYTHING";
+		case 2: return "ARGS";
+		case 3: return "ASSIGN";
+		case 4: return "BLOCK";
+		case 5: return "BOOLEAN";
+		case 6: return "CHARACTER";
+		case 7: return "CLOSE_BRACE";
+		case 8: return "CLOSE_BRACKET";
+		case 9: return "CLOSE_PAREN";
+		case 10: return "COLON";
+		case 11: return "COMMA";
+		case 12: return "DECREMENT";
+		case 13: return "DECREMENT_ONE";
+		case 14: return "DIVIDE";
+		case 15: return "DOT";
+		case 16: return "ELSE";
+		case 17: return "END_OF_FILE";
+		case 18: return "EQUAL";
+		case 19: return "FOR";
+		case 20: return "FUNCTION";
+		case 21: return "FUNCTION_CALL";
+		case 22: return "FUNCTION_GLUE";
+		case 23: return "GLUE";
+		case 24: return "GREATER_THAN";
+		case 25: return "GREATER_THAN_EQUAL";
+		case 26: return "IF";
+		case 27: return "INCREMENT";
+		case 28: return "INCREMENT_ONE";
+		case 29: return "INTEGER";
+		case 30: return "LESS_THAN";
+		case 31: return "LESS_THAN_EQUAL";
+		case 32: return "MINUS";
+		case 33: return "NOT";
+		case 34: return "NOT_EQUAL";
+		case 35: return "OPEN_BRACE";
+		case 36: return "OPEN_BRACKET";
+		case 37: return "OPEN_PAREN";
+		case 38: return "OR";
+		case 39: return "PARAMS";
+		case 40: return "PLUS";
+		case 41: return "POWER";
+		case 42: return "PRINT";
+		case 43: return "PRINTLN";
+		case 44: return "PROGRAM";
+		case 45: return "REAL";
+		case 46: return "RETURN";
+		case 47: return "SEMI";
+		case 48: return "STRING";
+		case 49: return "TIMES";
+		case 50: return "UNKNOWN";
+		case 51: return "VARIABLE";
+		case 52: return "WHILE";
+		default:
+		return "TYPE_NOT_MADE!";
 	}
 }
 Lexeme::Lexeme(){}
@@ -185,4 +248,19 @@ bool Lexeme::hasRight(){
 	if(this->right)
 		return true;
 	return false;
+}
+///////////////////////
+// just some helpers //
+///////////////////////
+
+Lexeme* cons(lexeme_type t,Lexeme* left,Lexeme* right){
+	Lexeme* main = new Lexeme(t);
+	main->left=left;
+	main->right=right;
+	return main;
+}
+Lexeme* cons(Lexeme* main,Lexeme* left,Lexeme* right){
+	main->left=left;
+	main->right=right;
+	return main;
 }

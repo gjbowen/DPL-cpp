@@ -34,5 +34,9 @@ struct Lexeme{
 	bool hasLeft();
 	bool hasRight();
 };
+//add to helper
+string index_to_string(int index);
+Lexeme* cons(lexeme_type t,Lexeme* left,Lexeme* right);
+Lexeme* cons(Lexeme* main,Lexeme* left,Lexeme* right);
 
 #endif

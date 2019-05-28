@@ -7,7 +7,7 @@
 */
 
 Lexeme* current;
-
+///////////////////////////////////////////////
 Lexeme* program(){
 	Lexeme* tree = new Lexeme(PROGRAM);
 	if(statementPending())
@@ -29,7 +29,7 @@ Lexeme* funcDef(){
 	if(paramListPending())
 		body->left =  paramList();
 	match(CLOSE_PAREN);
-	// body->right=block();
+	body->right=block();
 	tree->right=body;
 	return tree;
 }
@@ -60,10 +60,10 @@ Lexeme* block() {
 	match(CLOSE_BRACE);
 	return tree;
 }
-Lexeme*  statementList() {
+Lexeme* statementList() {
 	if(statementPending()){
 		Lexeme* sTree = statement();
-		Lexeme* sListTree = statementList(); 		
+		Lexeme* sListTree = statementList(); 	
 		return cons(BLOCK,sTree,sListTree);
 	}
 	return NULL;
@@ -74,8 +74,11 @@ bool statementPending(){
 	funcDefPending() 			||
 	printStatementPending() 	||
 	printlnStatementPending() 	||
+	ifStatementPending() 		||
 	incrementOnePending() 		||
 	decrementOnePending() 		||
+	whileStatementPending() 	||
+	forStatementPending() 		||
 	varExprPending();
 }
 Lexeme* statement(){
@@ -85,12 +88,28 @@ Lexeme* statement(){
 		return printStatement();
 	else if(printlnStatementPending())
 		printlnStatement();
-	else if(incrementOnePending())
-		incrementOne();
-	else if(decrementOnePending())
-		decrementOne();
-	else if(varExprPending())
-		varExpr();
+	else if(ifStatementPending())
+		return ifStatement();
+	else if(whileStatementPending())
+		return whileStatement();
+	else if(forStatementPending())
+		return forStatement();
+	/////////////////////////////
+	else if(varExprPending()){
+		Lexeme* tree = varExpr();
+		match(SEMI);
+		return tree;
+	}
+	else if(incrementOnePending()){
+		Lexeme* tree = incrementOne();
+		match(SEMI);	
+		return incrementOne();
+	}
+	else if(decrementOnePending()){
+		Lexeme* tree = decrementOne();
+		match(SEMI);	
+		return decrementOne();
+	}
 	return NULL;
 }
 /////////////////////////////////////////////////////
@@ -99,36 +118,20 @@ bool varExprPending(){
 }
 Lexeme* varExpr(){ 
 	Lexeme* tree = cons(match(VARIABLE),NULL,NULL);
-	if (check(OPEN_PAREN)){ //function call
+	if (check(OPEN_PAREN)) //function call
+	{
 		match(OPEN_PAREN); 
 		tree=cons(FUNCTION_CALL,tree,NULL);
-		//tree.setCdr(argsList());
+		tree->right = argsList();
 		match(CLOSE_PAREN); 
 	}
 
-	/*else if(check("OBRACK")) {  //array set
-		match("OBRACK");
-		tree.setCar(expr());
-		match("CBRACK");			
-		Lexeme temp = tree;
-		tree = cons("ARRAY_SET",temp,NULL);
-		tree.lineNumber=temp.lineNumber;
-		match(ASSIGN);
-		tree.setCdr(expr());
-	}*/
-	else if(check(ASSIGN)) {
+	else if(check(ASSIGN)) 
+	{
 		tree = cons(match(ASSIGN),tree,NULL);
 		tree->right = expr();
 	}
-	else if(incrementPending()){
-		tree->left = match(INCREMENT);
-		tree->right = unary();
-	}
-	else if(decrementPending()){
-		tree->left = match(DECREMENT);
-		tree->right = unary();
-	}
-	match(SEMI);
+	//match(SEMI);
 	return tree;
 }
 ///////////////////////////////////////////////
@@ -136,7 +139,11 @@ bool printStatementPending(){
 	check(PRINT);
 }
 Lexeme* printStatement(){
-	Lexeme* tree = cons(PRINT,NULL,NULL);
+	Lexeme* tree = cons(match(PRINT),NULL,NULL);
+	match(OPEN_PAREN);
+	tree->right = expr();
+	match(CLOSE_PAREN);
+	match(SEMI);
 	return tree;
 }
 ///////////////////////////////////////////////
@@ -144,20 +151,33 @@ bool printlnStatementPending(){
 	check(PRINTLN);
 }
 Lexeme* printlnStatement(){
-	Lexeme* tree = cons(PRINTLN,NULL,NULL);
+	Lexeme* tree = cons(match(PRINTLN),NULL,NULL);
+	match(OPEN_PAREN);
+	tree->right = expr();
+	match(CLOSE_PAREN);
+	match(SEMI);
 	return tree;
 }
 ///////////////////////////////////////////////
 Lexeme* expr(){
-	Lexeme* uTree=unary();
+	Lexeme* unaryTree = unary();
 
 	if(opPending()) // +  -  *  /  ^
 	{
-		Lexeme* oTree=op();
-		Lexeme* eTree=expr();
-		return cons(oTree,uTree,eTree);
+		Lexeme* opTree = op();
+		Lexeme* exprTree = expr();
+		return cons(opTree,unaryTree,exprTree);
 	}
-	return NULL;
+	else if(check(OPEN_PAREN)) //function calls
+	{
+		match(OPEN_PAREN);
+		Lexeme* exprTree = new Lexeme(FUNCTION_CALL);
+		exprTree->left = unaryTree;
+		exprTree->right = expr();
+		match(CLOSE_PAREN);
+		return exprTree;
+	}
+	return unaryTree;
 }
 
 
@@ -187,6 +207,90 @@ Lexeme* op() {
 	return advance();
 }
 
+Lexeme* conditionExpr(){
+	Lexeme* expr1 = expr();
+	Lexeme* eq = equality();
+	Lexeme* expr2 = expr();
+	return cons(eq,expr1,expr2);
+}
+
+//////////////////////////////////////////////////////////////
+bool forStatementPending() {
+	return check(FOR);
+}
+Lexeme* forStatement() {
+	Lexeme* forTree = match(FOR);
+	match(OPEN_PAREN);
+	Lexeme* var = varExpr();
+	match(SEMI);
+
+	Lexeme* cond = conditionExpr();
+	match(SEMI);
+
+	Lexeme* expr;
+	if(incrementOnePending())
+		expr = incrementOne();
+	else if(decrementOnePending())
+		expr =  decrementOne();
+	else if(varExprPending())
+		expr =  varExpr();
+	match(CLOSE_PAREN);
+	Lexeme* subGlueTree = cons(GLUE,var,expr);
+	Lexeme* glueTree = cons(GLUE,subGlueTree,cond);
+
+	forTree->left = glueTree;
+	forTree->right = block();
+
+	return forTree;
+}
+//////////////////////////////////////////////////////////////
+bool whileStatementPending() {
+	return check(WHILE);
+}
+Lexeme* whileStatement() {
+	Lexeme* whileTree = match(WHILE);
+	match(OPEN_PAREN);
+	whileTree->left = conditionExpr();
+	match(CLOSE_PAREN);
+	whileTree->right = block();
+	return whileTree;
+}
+//////////////////////////////////////////////////////////////
+bool ifStatementPending() {
+	return check(IF);
+}
+Lexeme* ifStatement() {
+	Lexeme* ifTree = cons(match(IF),NULL,NULL);
+	match(OPEN_PAREN);
+	Lexeme* glueTree = cons(GLUE,conditionExpr(),NULL);
+	match(CLOSE_PAREN);
+	glueTree->right = block();
+	ifTree->left = glueTree;
+	Lexeme* elseTree = optElseStatement();
+	ifTree->right = elseTree;
+	return ifTree;
+}
+////////////////////////////
+bool optElseStatementPending() {
+	return check(ELSE);
+}
+Lexeme* optElseStatement() {
+	if(optElseStatementPending())
+	{
+		Lexeme* elseTree = cons(match(ELSE),NULL,NULL);
+		if(ifStatementPending()) //else if(..){}
+		{
+			return ifStatement();
+		}
+		else
+		{
+			elseTree->right = block();
+			return elseTree;
+		}
+	}
+	else
+		return NULL;
+}
 //////////////////////////////////////////////////////////////
 bool compoundPending() {
 	return check(AND) || check(OR);
@@ -212,8 +316,9 @@ bool incrementOnePending() {
 	return check(INCREMENT_ONE);
 }
 Lexeme* incrementOne() {
-	Lexeme* tree=cons(match(INCREMENT_ONE),match(VARIABLE),NULL);
-	match(SEMI);
+	Lexeme* op = match(INCREMENT_ONE);
+	Lexeme* tree=cons(op,match(VARIABLE),NULL);
+	//match(SEMI);
 	return tree;
 }
 
@@ -221,11 +326,11 @@ bool decrementOnePending() {
 	return check(DECREMENT_ONE);
 }
 Lexeme* decrementOne() {
-	Lexeme* tree=cons(match(DECREMENT_ONE),match(VARIABLE),NULL);
-	match(SEMI);
+	Lexeme* op = match(DECREMENT_ONE);
+	Lexeme* tree=cons(op,match(VARIABLE),NULL);
+	// match(SEMI);
 	return tree;
 }
-
 //////////////////////////////////////////////////////////////
 bool incrementPending() {
 	return check(INCREMENT);
@@ -263,15 +368,15 @@ bool check(lexeme_type type){
 void matchNoAdvance(lexeme_type type){
 	if (!check(type)){
 		print_red("Syntax.Error");
+		print_red("\tExpected: "+index_to_string(stoi(to_string(type))));
 		print_red("\tActual: "+current->type_to_string());
-		print_red("\tExpected: "+current->type_to_string());
-		//exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 }
 void showTree(Lexeme* tree){
-	print_blue("TYPE: " + tree->type_to_string());
+	print_blue("TYPE: " + tree->type_to_string()+"("+to_string(tree->type)+")");
 	print("    VALUE: "+ tree->getValue());
-	print("    LINE: " + tree->lineNumber);
+	print("    LINE: " + to_string(tree->lineNumber));
 	print("    left node: "+to_string(tree->hasLeft())+"    right node: "+to_string(tree->hasRight()));
 
 	if(tree){ 
@@ -287,18 +392,4 @@ void showTree(Lexeme* tree){
 		}
 	}
 }
-///////////////////////
-// just some helpers //
-///////////////////////
 
-Lexeme* cons(lexeme_type t,Lexeme* left,Lexeme* right){
-	Lexeme* main = new Lexeme(t);
-	main->left=left;
-	main->right=right;
-	return main;
-}
-Lexeme* cons(Lexeme* main,Lexeme* left,Lexeme* right){
-	main->left=left;
-	main->right=right;
-	return main;
-}
