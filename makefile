@@ -22,6 +22,9 @@ test:
 compile:
 	g++ ./main.cpp -o main.out
 
+headers:
+	clear
+	python3 help.py
 # Run
 #
 run:
@@ -38,6 +41,11 @@ tree:
 	g++ ./main.cpp -o main.out
 	clear
 	./main.out tree
+
+environment:
+	g++ ./main.cpp -o main.out
+	clear
+	./main.out environment
 
 # Removes all .out files
 #

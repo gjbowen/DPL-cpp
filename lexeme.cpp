@@ -54,7 +54,13 @@ enum lexeme_type : short{
 	TIMES,
 	UNKNOWN,
 	VARIABLE,
-	WHILE
+	WHILE,
+	ENV,
+	VALUES,
+	JOIN,
+	TABLE,
+	VALS,
+	VARS
 };
 string index_to_string(int index){
 	switch(index){
@@ -111,6 +117,12 @@ string index_to_string(int index){
 		case 50: return "UNKNOWN";
 		case 51: return "VARIABLE";
 		case 52: return "WHILE";
+		case 53: return "ENV";
+		case 54: return "VALUES";
+		case 55: return "JOIN";
+		case 56: return "TABLE";
+		case 57: return "VALS";
+		case 58: return "VARS";
 		default:
 		return "TYPE_NOT_MADE!";
 	}
@@ -170,14 +182,18 @@ string Lexeme::type_to_string(){
 		case 50: return "UNKNOWN";
 		case 51: return "VARIABLE";
 		case 52: return "WHILE";
+		case 53: return "ENV";
+		case 54: return "VALUES";
+		case 55: return "JOIN";
+		case 56: return "TABLE";
+		case 57: return "VALS";
+		case 58: return "VARS";
+
 		default:
 		return "TYPE_NOT_MADE!";
 	}
 }
 Lexeme::Lexeme(){}
-Lexeme::Lexeme(lexeme_type t){
-	type=t;
-}
 Lexeme::Lexeme(lexeme_type t,int l){
 	type=t;
 	lineNumber=l;
@@ -206,6 +222,9 @@ Lexeme::Lexeme(lexeme_type t,int l,bool i){
 	type=t;
 	lineNumber=l;
 	boolVal=i;
+}
+Lexeme::Lexeme(lexeme_type t){
+	type=t;
 }
 void Lexeme::display(){
 	if(type==CHARACTER)
@@ -239,6 +258,9 @@ string Lexeme::getValue(){
 		return strVal;
 	return "NULL";
 }
+
+
+
 bool Lexeme::hasLeft(){
 	if(this->left)
 		return true;
@@ -264,3 +286,18 @@ Lexeme* cons(Lexeme* main,Lexeme* left,Lexeme* right){
 	main->right=right;
 	return main;
 }
+
+
+bool sameVariable(Lexeme* left, Lexeme* right){
+	if(!left->strVal.empty() && !right->strVal.empty())
+		if(left->type==VARIABLE && right->type== VARIABLE){
+			if(left->strVal==right->strVal)
+				return true;
+		}
+	return false;
+}
+
+Lexeme::~Lexeme(){  
+	cout << "Hey look I am in destructor" << endl;
+	delete this;
+} 

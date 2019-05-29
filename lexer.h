@@ -1,16 +1,13 @@
 #ifndef lexer_
 #define lexer_
-
 void getNextLine();
-void cleanChar();
 void getChar();
-void skipWhiteSpace();
+void cleanChar();
 void pushBack();
-
+void skipWhiteSpace();
 Lexeme* lex();
 Lexeme* lexVariableOrKeyword();
-Lexeme* lexString();
-Lexeme* lexNumber();
 Lexeme* decNumber();
-
+Lexeme* lexNumber();
+Lexeme* lexString();
 #endif
