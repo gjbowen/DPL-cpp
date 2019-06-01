@@ -1,51 +1,61 @@
 
 # define a makefile variable for the java & compiler
-cc = g++
+CC = g++ -std=c++11
 run  = ./
 rm  = rm -rf
 
-default: clear compile run
+default: clear headers compile run
 
 # Clear Console
 #
 clear:
 	clear
 
-# Test File
-#
-test:
-	g++ ./test.cpp -o test.out
-	./test.out
-
 # Compile c++ files
 #
 compile:
-	g++ ./main.cpp -o main.out
+	 $(CC) ./main.cpp -o main.out
 
 headers:
 	clear
 	python3 help.py
+
 # Run
 #
 run:
 	./main.out
 
+# Show tokens
+#
 tokens:
-	g++ ./main.cpp -o main.out
+	python3 help.py
+	$(CC) ./main.cpp -o main.out
 	clear
 	./main.out tokens
-token:
-	$(tokens)
-	
+
+# Show parse tree
+#	
 tree:
-	g++ ./main.cpp -o main.out
+	python3 help.py
+	$(CC) ./main.cpp -o main.out
 	clear
 	./main.out tree
 
+# Test environment
+#
 environment:
-	g++ ./main.cpp -o main.out
+	python3 help.py
+	$(CC) ./main.cpp -o main.out
 	clear
 	./main.out environment
+
+# Run the evaluator
+#
+evaluator:
+	python3 help.py
+	$(CC) ./main.cpp -o main.out
+	clear
+	./main.out evaluator
 
 # Removes all .out files
 #

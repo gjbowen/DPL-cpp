@@ -6,10 +6,11 @@ Lexeme* createEnv(){
 }
 
 Lexeme* extendEnv(Lexeme* vars,Lexeme* vals,Lexeme* env){
-	return cons(ENV,cons(TABLE,vars,vals),env);
+	Lexeme* tree = cons(ENV,cons(TABLE,vars,vals),env);
+	return tree;
 }
 
-void insertEnv(Lexeme* variable,Lexeme* value,Lexeme*env){
+void insertEnv(Lexeme* variable,Lexeme* value,Lexeme* env){
 	Lexeme* table = env->left;
 	table->left =cons(VARS,variable,table->left);
 	table->right=cons(VALS,value,table->right);
@@ -37,6 +38,8 @@ Lexeme* lookupEnv(Lexeme* variable,Lexeme* env){
 	return NULL;
 }
 Lexeme* updateEnv(Lexeme* variable,Lexeme* newValue,Lexeme* env){
+	
+	Lexeme* temp = env; //hold the value in case it's not defined
 	while (env)
 	{
 		Lexeme* table = env->left;
@@ -54,7 +57,11 @@ Lexeme* updateEnv(Lexeme* variable,Lexeme* newValue,Lexeme* env){
 		}
 		env = env->right;
 	}
-	print_red("variable "+variable->strVal+" is undefined");
-	exit(EXIT_FAILURE);
+	env = temp;
+
+	insertEnv(variable,newValue,env);
+
+	//print_red("variable "+variable->strVal+" is undefined");
+	// exit(EXIT_FAILURE);
 	return NULL;
 }

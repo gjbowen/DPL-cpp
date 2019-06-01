@@ -34,11 +34,22 @@ Lexeme* funcDef(){
 	return tree;
 }
 ///////////////////////////////////////////////
+bool returnPending(){
+	return check(RETURN);
+}
+Lexeme* returnList(){
+	Lexeme* tree = cons(match(RETURN),NULL,NULL);
+	tree->left = expr();
+	match(SEMI);
+	return tree;
+}
+///////////////////////////////////////////////
 bool paramListPending(){
 	return check(VARIABLE);
 }
 Lexeme* paramList(){
-	Lexeme* paramTree = cons(match(VARIABLE),NULL,NULL);
+	Lexeme* var = match(VARIABLE);
+	Lexeme* paramTree = cons(ARGS,var,NULL);
 	if(check(COMMA)) {
 		match(COMMA);//more!
 		paramTree->right = paramList();	
@@ -57,6 +68,9 @@ Lexeme* argsList(){
 Lexeme* block() {
 	match(OPEN_BRACE);
 	Lexeme* tree = statementList();
+	if(returnPending()){
+
+	}
 	match(CLOSE_BRACE);
 	return tree;
 }
@@ -103,12 +117,12 @@ Lexeme* statement(){
 	else if(incrementOnePending()){
 		Lexeme* tree = incrementOne();
 		match(SEMI);	
-		return incrementOne();
+		return tree;
 	}
 	else if(decrementOnePending()){
 		Lexeme* tree = decrementOne();
 		match(SEMI);	
-		return decrementOne();
+		return tree;
 	}
 	return NULL;
 }
@@ -125,10 +139,19 @@ Lexeme* varExpr(){
 		tree->right = argsList();
 		match(CLOSE_PAREN); 
 	}
-
 	else if(check(ASSIGN)) 
 	{
 		tree = cons(match(ASSIGN),tree,NULL);
+		tree->right = expr();
+	}
+	else if(check(INCREMENT)) 
+	{
+		tree = cons(match(INCREMENT),tree,NULL);
+		tree->right = expr();
+	}
+	else if(check(DECREMENT)) 
+	{
+		tree = cons(match(DECREMENT),tree,NULL);
 		tree->right = expr();
 	}
 	//match(SEMI);
@@ -136,24 +159,24 @@ Lexeme* varExpr(){
 }
 ///////////////////////////////////////////////
 bool printStatementPending(){
-	check(PRINT);
+	return check(PRINT);
 }
 Lexeme* printStatement(){
 	Lexeme* tree = cons(match(PRINT),NULL,NULL);
 	match(OPEN_PAREN);
-	tree->right = expr();
+	tree->left = expr();
 	match(CLOSE_PAREN);
 	match(SEMI);
 	return tree;
 }
 ///////////////////////////////////////////////
 bool printlnStatementPending(){
-	check(PRINTLN);
+	return check(PRINTLN);
 }
 Lexeme* printlnStatement(){
 	Lexeme* tree = cons(match(PRINTLN),NULL,NULL);
 	match(OPEN_PAREN);
-	tree->right = expr();
+	tree->left = expr();
 	match(CLOSE_PAREN);
 	match(SEMI);
 	return tree;
@@ -166,8 +189,10 @@ Lexeme* expr(){
 	{
 		Lexeme* opTree = op();
 		Lexeme* exprTree = expr();
-		return cons(opTree,unaryTree,exprTree);
+		Lexeme* tree =  cons(opTree,unaryTree,exprTree);
+		return tree;
 	}
+
 	else if(check(OPEN_PAREN)) //function calls
 	{
 		match(OPEN_PAREN);
@@ -197,10 +222,12 @@ Lexeme* unary(){
 }
 ///////////////////////////////////////////////
 bool opPending() {
-	return check(PLUS)	||
+	return 
+	check(PLUS)		||
 	check(MINUS)	||
 	check(TIMES)	||
 	check(DIVIDE)	||
+	check(MOD)		||
 	check(POWER);
 }
 Lexeme* op() {
@@ -335,11 +362,26 @@ Lexeme* decrementOne() {
 bool incrementPending() {
 	return check(INCREMENT);
 }
+Lexeme* increment() {
+	Lexeme* op = match(INCREMENT);
+	Lexeme* tree=cons(op,match(VARIABLE),NULL);
+	tree->right = expr();
+	//match(SEMI);
+	return tree;
+}
+
 bool decrementPending() {
 	return check(DECREMENT);
 }
+Lexeme* decrement() {
+	Lexeme* op = match(DECREMENT);
+	Lexeme* tree=cons(op,match(VARIABLE),NULL);
+	tree->right = expr();
+	// match(SEMI);
+	return tree;
+}
 
-///////////////////////////////////////////////
+///////////////////////////////////////
 ///////////////////////////////////////////////
 //essentially the driver for Parser
 Lexeme* parse() {

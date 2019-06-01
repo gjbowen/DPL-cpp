@@ -94,6 +94,7 @@ Lexeme* lex(){
 		case '/': return new Lexeme(DIVIDE,lineNumber);
 		case ';': return new Lexeme(SEMI,lineNumber);
 		case '^': return new Lexeme(POWER,lineNumber);
+		case '%': return new Lexeme(MOD,lineNumber);
 
 		default:
 
@@ -198,6 +199,8 @@ Lexeme* lexVariableOrKeyword() {
 	else if (toUpper(token)=="FOR")   	return new Lexeme(FOR,lineNumber);
 	else if (toUpper(token)=="NOT")   	return new Lexeme(NOT,lineNumber);
 	else if (toUpper(token)=="RETURN")  return new Lexeme(RETURN,lineNumber);
+	else if (toUpper(token)=="TRUE")  return new Lexeme(BOOLEAN,lineNumber,true);
+	else if (toUpper(token)=="FALSE")  return new Lexeme(BOOLEAN,lineNumber,false);
 		//must be a variable!
 	return new Lexeme(VARIABLE,lineNumber,token);
 }

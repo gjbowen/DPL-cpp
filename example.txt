@@ -1,3 +1,6 @@
+z=9;
+function main(a,b,c){
+	return a+b+c;
+}
 
-x = 3;
-print(y);
+main(5+1,6,7);

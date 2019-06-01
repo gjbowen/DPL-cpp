@@ -60,7 +60,9 @@ enum lexeme_type : short{
 	JOIN,
 	TABLE,
 	VALS,
-	VARS
+	VARS,
+	MOD,
+	CLOSURE
 };
 string index_to_string(int index){
 	switch(index){
@@ -123,6 +125,9 @@ string index_to_string(int index){
 		case 56: return "TABLE";
 		case 57: return "VALS";
 		case 58: return "VARS";
+		case 59: return "MOD";
+		case 60: return "CLOSURE";
+
 		default:
 		return "TYPE_NOT_MADE!";
 	}
@@ -188,6 +193,8 @@ string Lexeme::type_to_string(){
 		case 56: return "TABLE";
 		case 57: return "VALS";
 		case 58: return "VARS";
+		case 59: return "MOD";
+		case 60: return "CLOSURE";
 
 		default:
 		return "TYPE_NOT_MADE!";
@@ -252,8 +259,12 @@ string Lexeme::getValue(){
 		return to_string(intVal);
 	else if(type==REAL)
 		return to_string(realVal);
-	else if(type==BOOLEAN)
-		return to_string(boolVal);
+	else if(type==BOOLEAN){
+		if(boolVal)
+			return "TRUE";
+		else
+			return "FALSE";
+	}
 	else if(type==VARIABLE)
 		return strVal;
 	return "NULL";
