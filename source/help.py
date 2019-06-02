@@ -29,7 +29,7 @@ def getTypes():
 def writeHeaders(file):
 	stuff=[]
 	f = open(file+".cpp",'rt')
-	f2 = open(file+".h",'wt')
+	f2 = open("../headers/"+file+".h",'wt')
 	f2.write("#ifndef "+file+"_\n")
 	f2.write("#define "+file+"_\n")
 	for i in f:

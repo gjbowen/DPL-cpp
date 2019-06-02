@@ -1,5 +1,5 @@
 /////////////////////
-#include "lexer.h" //
+#include "../headers/lexer.h" //
 /////////////////////
 char pushBackCh;
 bool chHasBeenPushed=false;

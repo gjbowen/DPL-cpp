@@ -1,4 +1,4 @@
-#include "evaluator.h"
+#include "../headers/evaluator.h"
 
 Lexeme* eval(Lexeme* tree, Lexeme* env){
 	switch (tree->type)

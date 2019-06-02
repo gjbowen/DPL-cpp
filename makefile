@@ -18,7 +18,7 @@ compile:
 
 headers:
 	clear
-	python3 help.py
+	python3 source/help.py
 
 # Run
 #
@@ -28,7 +28,7 @@ run:
 # Show tokens
 #
 tokens:
-	python3 help.py
+	python3 source/help.py
 	$(CC) ./main.cpp -o main.out
 	clear
 	./main.out tokens
@@ -36,7 +36,7 @@ tokens:
 # Show parse tree
 #	
 tree:
-	python3 help.py
+	python3 source/help.py
 	$(CC) ./main.cpp -o main.out
 	clear
 	./main.out tree
@@ -44,7 +44,7 @@ tree:
 # Test environment
 #
 environment:
-	python3 help.py
+	python3 source/help.py
 	$(CC) ./main.cpp -o main.out
 	clear
 	./main.out environment
@@ -52,7 +52,7 @@ environment:
 # Run the evaluator
 #
 evaluator:
-	python3 help.py
+	python3 source/help.py
 	$(CC) ./main.cpp -o main.out
 	clear
 	./main.out evaluator

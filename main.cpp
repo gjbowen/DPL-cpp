@@ -10,19 +10,19 @@ ifstream myfile;
 string line;
 int lineNumber=0;
 
-#include "helper.cpp"
-#include "lexeme.cpp"
-#include "lexer.cpp"
-#include "parser.cpp"
-#include "environment.cpp"
-#include "evaluator.cpp"
+#include "source/helper.cpp"
+#include "source/lexeme.cpp"
+#include "source/lexer.cpp"
+#include "source/parser.cpp"
+#include "source/environment.cpp"
+#include "source/evaluator.cpp"
 
 int main(int argc, char *args[]){
-	myfile.open("example.txt");
-	getNextLine();
-	print("--------------------------------------");
 	if(argc>1)
 	{
+		myfile.open("example.txt");
+		getNextLine();
+		print_yellow("--------------------------------------");
 		string mode (args[1]);
 		print_red("MODE: " + mode);
 		Lexeme* lexeme = new Lexeme();
@@ -69,14 +69,12 @@ int main(int argc, char *args[]){
 			lexeme = parse();
 			while(lexeme)
 			{
-				// lexeme->left->display();
 				eval(lexeme->left,env);
 				lexeme=lexeme->right;
 			}
 		}
-	}
-		print("--------------------------------------");
+		print_yellow("--------------------------------------");
 		myfile.close();
-
-		return 0;
 	}
+	return 0;
+}

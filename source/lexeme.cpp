@@ -1,5 +1,5 @@
 //////////////////////
-#include "lexeme.h"	//
+#include "../headers/lexeme.h"	//
 //////////////////////
 enum lexeme_type : short{
 	AND,
