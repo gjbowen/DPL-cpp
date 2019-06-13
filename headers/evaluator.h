@@ -16,5 +16,6 @@ Lexeme* evalDecrementOne(Lexeme* tree, Lexeme* env);
 Lexeme* evalIncrement(Lexeme* tree, Lexeme* env);
 Lexeme* evalDecrement(Lexeme* tree, Lexeme* env);
 Lexeme* evalPrint(Lexeme* tree, Lexeme* env);
+Lexeme* evalPrintln(Lexeme* tree, Lexeme* env);
 Lexeme* evalAssign(Lexeme* tree, Lexeme* env);
 #endif

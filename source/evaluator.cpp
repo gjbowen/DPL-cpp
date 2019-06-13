@@ -38,7 +38,8 @@ Lexeme* eval(Lexeme* tree, Lexeme* env){
 			// case VAR_DEF: return evalVarDef(tree,env);
 			// case FUNC_DEF: return evalFuncDef(tree,env);
 			// //imperative constructs
-		case PRINT: return evalPrint(tree,env);
+        case PRINT: return evalPrint(tree,env);
+        case PRINTLN: return evalPrintln(tree,env);
 			// case WHILE: return evalWhile(tree,env);
 			// //function calls
 		case FUNCTION_CALL: return evalFuncCall(tree,env);
@@ -223,10 +224,50 @@ Lexeme* evalDecrement(Lexeme* tree, Lexeme* env){
 	return val;
 }
 Lexeme* evalPrint(Lexeme* tree, Lexeme* env){
-	tree = tree->left;
-	string tokens =eval(tree,env)->getValue();
-	print_blue(tokens);
-	return NULL;
+    string color = tree->strVal;
+    tree = tree->right;
+    string tokens = eval(tree,env)->getValue();
+
+    if(color=="RED")
+        print_red(tokens);
+    else if(color=="GREEN")
+        print_green(tokens);
+    else if(color=="BLUE")
+        print_blue(tokens);
+    else if(color=="YELLOW")
+        print_yellow(tokens);
+    else if(color=="MAGENTA")
+        print_magenta(tokens);
+    else if(color=="CYAN")
+        print_cyan(tokens);
+    else if(color=="WHITE")
+        print_white(tokens);
+    else
+        print(tokens);
+    return NULL;
+}
+Lexeme* evalPrintln(Lexeme* tree, Lexeme* env){
+    string color = tree->strVal;
+    tree = tree->right;
+    string tokens = eval(tree,env)->getValue();
+
+    if(color=="RED")
+        println_red(tokens);
+    else if(color=="GREEN")
+        println_green(tokens);
+    else if(color=="BLUE")
+        println_blue(tokens);
+    else if(color=="YELLOW")
+        println_yellow(tokens);
+    else if(color=="MAGENTA")
+        println_magenta(tokens);
+    else if(color=="CYAN")
+        println_cyan(tokens);
+    else if(color=="WHITE")
+        println_white(tokens);
+    else
+        println(tokens);
+    return NULL;
 }
 Lexeme* evalAssign(Lexeme* tree, Lexeme* env){
 	Lexeme* var = tree->left;

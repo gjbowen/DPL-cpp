@@ -162,9 +162,11 @@ bool printStatementPending(){
 	return check(PRINT);
 }
 Lexeme* printStatement(){
+    string color = current->strVal;
 	Lexeme* tree = cons(match(PRINT),NULL,NULL);
+	tree->strVal = color;
 	match(OPEN_PAREN);
-	tree->left = expr();
+	tree->right = expr();
 	match(CLOSE_PAREN);
 	match(SEMI);
 	return tree;
@@ -174,12 +176,16 @@ bool printlnStatementPending(){
 	return check(PRINTLN);
 }
 Lexeme* printlnStatement(){
-	Lexeme* tree = cons(match(PRINTLN),NULL,NULL);
-	match(OPEN_PAREN);
-	tree->left = expr();
-	match(CLOSE_PAREN);
-	match(SEMI);
-	return tree;
+    string color = current->strVal;
+    Lexeme* tree = cons(match(PRINTLN),NULL,NULL);
+    tree->strVal = color;
+    match(OPEN_PAREN);
+    tree->right = expr();
+    match(CLOSE_PAREN);
+    match(SEMI);
+    cout<<"IN PARSER"<<endl;
+
+    return tree;
 }
 ///////////////////////////////////////////////
 Lexeme* expr(){
@@ -416,21 +422,21 @@ void matchNoAdvance(lexeme_type type){
 	}
 }
 void showTree(Lexeme* tree){
-	print_blue("TYPE: " + tree->type_to_string()+"("+to_string(tree->type)+")");
-	print("    VALUE: "+ tree->getValue());
-	print("    LINE: " + to_string(tree->lineNumber));
-	print("    left node: "+to_string(tree->hasLeft())+"    right node: "+to_string(tree->hasRight()));
+	print("TYPE: " + tree->type_to_string()+"("+to_string(tree->type)+")"); cout<<endl;
+	print("    VALUE: "+ tree->getValue());cout<<endl;
+	print("    LINE: " + to_string(tree->lineNumber));cout<<endl;
+	print("    left node: "+to_string(tree->hasLeft())+"    right node: "+to_string(tree->hasRight()));cout<<endl;
 
 	if(tree){ 
 		if(tree->hasLeft()){
-			print("Going left..");
+			print("Going left..");cout<<endl;
 			showTree(tree->left);
-			print("Back up to parent!");
+			print("Back up to parent!");cout<<endl;
 		}
 		if(tree->hasRight()){
-			print("Going right..");
+			print("Going right..");cout<<endl;
 			showTree(tree->right);
-			print("Back up to parent!");
+			print("Back up to parent!");cout<<endl;
 		}
 	}
 }

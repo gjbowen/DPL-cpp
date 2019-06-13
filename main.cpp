@@ -10,7 +10,7 @@ ifstream myfile;
 string line;
 int lineNumber=0;
 
-#include "source/helper_basic.cpp"
+#include "source/helper.cpp"
 #include "source/lexeme.cpp"
 #include "source/lexer.cpp"
 #include "source/parser.cpp"
@@ -19,14 +19,16 @@ int lineNumber=0;
 
 int main(int argc, char *args[]){
     /////////////////////////////////////////
-
+    cout<<"starting.."<<endl;
     myfile.open("example.txt");
     getNextLine();
     Lexeme* lexeme = new Lexeme();
-    while(lexeme->type!=END_OF_FILE)
+    Lexeme* env = createEnv();
+    lexeme = parse();
+    while(lexeme)
     {
-        lexeme=lex();
-        lexeme->display();
+        eval(lexeme->left,env);
+        lexeme=lexeme->right;
     }
     myfile.close();
     /////////////////////////////////////////

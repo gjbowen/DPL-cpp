@@ -206,8 +206,10 @@ Lexeme* lexVariableOrKeyword() {
         else //added color
             return new Lexeme(PRINT,lineNumber,toUpper(token).substr(6,token.length()));
     else if (isPrintln (toUpper(token)))
-        if(token.length()==7) //just a println
+        if(token.length()==7){//just a println
+            cout<<"just a println in lexer.."<<endl;
             return new Lexeme(PRINTLN,lineNumber);
+        }
         else //added color
             return new Lexeme(PRINTLN,lineNumber,toUpper(token).substr(8,token.length()));
     //must be a variable!
@@ -226,6 +228,7 @@ bool isPrint(string token) {
 }
 
 bool isPrintln(string token) {
+    cout<<"ITS A PRINTLN!!!"<<endl;
     return token == "PRINTLN" ||
            token == "PRINTLN_RED" ||
            token == "PRINTLN_GREEN" ||

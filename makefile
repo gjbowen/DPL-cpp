@@ -14,7 +14,7 @@ clear:
 # Compile c++ files
 #
 compile:
-	 $(CC) ./main.cpp -o main.out
+	 $(CC) ./main.cpp -o main.out -g
 
 headers:
 	clear
@@ -23,7 +23,7 @@ headers:
 # Run
 #
 run:
-	./main.out
+	gdb ./main.out
 
 # Show tokens
 #

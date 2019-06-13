@@ -247,7 +247,7 @@ void Lexeme::display(){
 	else if(type==VARIABLE)
 		cout<<"VARIABLE:  "<<strVal<<endl;
 	else{
-		cout<<"KEYWORD:   ";print_blue(type_to_string()+"    "+ strVal);
+		cout<<"KEYWORD:   "<< type_to_string() <<"    "<< strVal<<endl;
 	}
 }
 string Lexeme::getValue(){
