@@ -10,7 +10,7 @@ ifstream myfile;
 string line;
 int lineNumber=0;
 
-#include "source/helper.cpp"
+#include "source/helper_basic.cpp"
 #include "source/lexeme.cpp"
 #include "source/lexer.cpp"
 #include "source/parser.cpp"
@@ -18,7 +18,19 @@ int lineNumber=0;
 #include "source/evaluator.cpp"
 
 int main(int argc, char *args[]){
-	if(argc>1)
+    /////////////////////////////////////////
+
+    myfile.open("example.txt");
+    getNextLine();
+    Lexeme* lexeme = new Lexeme();
+    while(lexeme->type!=END_OF_FILE)
+    {
+        lexeme=lex();
+        lexeme->display();
+    }
+    myfile.close();
+    /////////////////////////////////////////
+	/*if(argc>1)
 	{
 		myfile.open("example.txt");
 		getNextLine();
@@ -75,6 +87,7 @@ int main(int argc, char *args[]){
 		}
 		print_yellow("--------------------------------------");
 		myfile.close();
-	}
+	}*/
+
 	return 0;
 }

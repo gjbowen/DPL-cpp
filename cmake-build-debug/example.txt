@@ -1,0 +1,5 @@
+print("YAY");
+print_red("YAY");
+
+println("YAY");
+println_red("YAY");

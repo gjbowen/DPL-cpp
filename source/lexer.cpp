@@ -41,6 +41,7 @@ void getChar(){
 		}
 	}
 }
+
 void cleanChar(){
 	if (ch=='\t' || ch=='\r')
 		ch=' ';
@@ -55,7 +56,6 @@ void pushBack() {
 	pushBackCh=ch;
 	chHasBeenPushed=true;
 }
-
 
 void skipWhiteSpace() {
 	if(!done){
@@ -181,38 +181,69 @@ Lexeme* lex(){
 
 Lexeme* lexVariableOrKeyword() {
 	string token="";
-	while (isalnum(ch)||isdigit(ch))
+	while (isalnum(ch)||isdigit(ch)||ch=='_')
 	{
 		token = token + ch;
 		getChar();
 	}
 	pushBack();
 
-		//token holds either a variable or a keyword, so figure it out
-	if (toUpper(token)=="FUNCTION"||toUpper(token)=="FUNC") 		
-		return new Lexeme(FUNCTION,lineNumber);
-	else if (toUpper(token)=="PRINT") 	return new Lexeme(PRINT,lineNumber);
-	else if (toUpper(token)=="PRINTLN") return new Lexeme(PRINT,lineNumber);
-	else if (toUpper(token)=="IF")    	return new Lexeme(IF,lineNumber);
-	else if (toUpper(token)=="ELSE")  	return new Lexeme(ELSE,lineNumber);
-	else if (toUpper(token)=="WHILE") 	return new Lexeme(WHILE,lineNumber);
-	else if (toUpper(token)=="FOR")   	return new Lexeme(FOR,lineNumber);
-	else if (toUpper(token)=="NOT")   	return new Lexeme(NOT,lineNumber);
-	else if (toUpper(token)=="RETURN")  return new Lexeme(RETURN,lineNumber);
-	else if (toUpper(token)=="TRUE")  return new Lexeme(BOOLEAN,lineNumber,true);
-	else if (toUpper(token)=="FALSE")  return new Lexeme(BOOLEAN,lineNumber,false);
-		//must be a variable!
+    //token holds either a variable or a keyword, so figure it out
+    if (toUpper(token)=="FUNCTION"||toUpper(token)=="FUNC")
+        return new Lexeme(FUNCTION,lineNumber);
+    else if (toUpper(token)=="IF")    	return new Lexeme(IF,lineNumber);
+    else if (toUpper(token)=="ELSE")  	return new Lexeme(ELSE,lineNumber);
+    else if (toUpper(token)=="WHILE") 	return new Lexeme(WHILE,lineNumber);
+    else if (toUpper(token)=="FOR")   	return new Lexeme(FOR,lineNumber);
+    else if (toUpper(token)=="NOT")   	return new Lexeme(NOT,lineNumber);
+    else if (toUpper(token)=="RETURN")  return new Lexeme(RETURN,lineNumber);
+    else if (toUpper(token)=="TRUE")    return new Lexeme(BOOLEAN,lineNumber,true);
+    else if (toUpper(token)=="FALSE")   return new Lexeme(BOOLEAN,lineNumber,false);
+    // check for print deviations
+    else if (isPrint (toUpper(token)))
+        if(token.length()==5) //just a print
+            return new Lexeme(PRINT,lineNumber);
+        else //added color
+            return new Lexeme(PRINT,lineNumber,toUpper(token).substr(6,token.length()));
+    else if (isPrintln (toUpper(token)))
+        if(token.length()==7) //just a println
+            return new Lexeme(PRINTLN,lineNumber);
+        else //added color
+            return new Lexeme(PRINTLN,lineNumber,toUpper(token).substr(8,token.length()));
+    //must be a variable!
 	return new Lexeme(VARIABLE,lineNumber,token);
 }
 
+bool isPrint(string token) {
+    return token == "PRINT" ||
+           token == "PRINT_RED" ||
+           token == "PRINT_GREEN" ||
+           token == "PRINT_YELLOW" ||
+           token == "PRINT_BLUE" ||
+           token == "PRINT_MAGENTA" ||
+           token == "PRINT_CYAN" ||
+           token == "PRINT_WHITE";
+}
+
+bool isPrintln(string token) {
+    return token == "PRINTLN" ||
+           token == "PRINTLN_RED" ||
+           token == "PRINTLN_GREEN" ||
+           token == "PRINTLN_YELLOW" ||
+           token == "PRINTLN_BLUE" ||
+           token == "PRINTLN_MAGENTA" ||
+           token == "PRINTLN_CYAN" ||
+           token == "PRINTLN_WHITE";
+}
+
 Lexeme* decNumber() {
-	string token = "";
-	while (isdigit(ch)) {
-		token = token + ch;
-		getChar();
-	}
-	pushBack();
-	return new Lexeme(REAL,lineNumber, stof('.'+token));
+    string token = "";
+    while (isdigit(ch)) {
+        token = token + ch;
+        getChar();
+    }
+    pushBack();
+    return new Lexeme(REAL,lineNumber, stof('.'+token));
 }
 
 Lexeme* lexNumber() {

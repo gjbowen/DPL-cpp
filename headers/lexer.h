@@ -7,6 +7,8 @@ void pushBack();
 void skipWhiteSpace();
 Lexeme* lex();
 Lexeme* lexVariableOrKeyword();
+bool isPrint(string token);
+bool isPrintln(string token);
 Lexeme* decNumber();
 Lexeme* lexNumber();
 Lexeme* lexString();

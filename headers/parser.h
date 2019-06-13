@@ -3,6 +3,8 @@
 Lexeme* program();
 bool funcDefPending();
 Lexeme* funcDef();
+bool returnPending();
+Lexeme* returnList();
 bool paramListPending();
 Lexeme* paramList();
 Lexeme* argsList();

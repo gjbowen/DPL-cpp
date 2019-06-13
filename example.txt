@@ -1,6 +1,0 @@
-z=9;
-function main(a,b,c){
-	return a+b+c;
-}
-
-main(5+1,6,7);
