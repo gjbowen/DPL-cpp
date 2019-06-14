@@ -6,6 +6,10 @@ rm  = rm -rf
 
 default: clear headers compile run
 
+debug:
+	$(CC) ./main.cpp -o main.out -g
+	gdb ./main.out
+
 # Clear Console
 #
 clear:
@@ -23,7 +27,7 @@ headers:
 # Run
 #
 run:
-	gdb ./main.out
+	./main.out
 
 # Show tokens
 #

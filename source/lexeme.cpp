@@ -45,7 +45,7 @@ enum lexeme_type : short{
 	PLUS,
 	POWER,
 	PRINT,
-	PRINTLN,
+    PRINT_LN,
 	PROGRAM,
 	REAL,
 	RETURN,
@@ -109,7 +109,7 @@ string index_to_string(int index){
 		case 40: return "PLUS";
 		case 41: return "POWER";
 		case 42: return "PRINT";
-		case 43: return "PRINTLN";
+		case 43: return "PRINT_LN";
 		case 44: return "PROGRAM";
 		case 45: return "REAL";
 		case 46: return "RETURN";
@@ -177,7 +177,7 @@ string Lexeme::type_to_string(){
 		case 40: return "PLUS";
 		case 41: return "POWER";
 		case 42: return "PRINT";
-		case 43: return "PRINTLN";
+		case 43: return "PRINT_LN";
 		case 44: return "PROGRAM";
 		case 45: return "REAL";
 		case 46: return "RETURN";
@@ -309,6 +309,6 @@ bool sameVariable(Lexeme* left, Lexeme* right){
 }
 
 Lexeme::~Lexeme(){  
-	cout << "Hey look I am in destructor" << endl;
+	cout << "Hey look, I am in destructor" << endl;
 	delete this;
 } 

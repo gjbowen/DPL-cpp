@@ -45,28 +45,28 @@ void print_white(string message){
 }
 ///////////////////////////////////////////////
 void println(string message){
-//    print(message+"\n");
+    print(message+"\n");
 }
 void println_red(string message){
-    print_red(message+"\n");
+    println("\033[1;31m"+message+"\033[0m");
 }
 void println_green(string message){
-    print_green(message+"\n");
+    println("\033[1;32m"+message+"\033[0m");
 }
 void println_yellow(string message){
-    print_yellow(message+"\n");
+    println("\033[1;33m"+message+"\033[0m");
 }
 void println_blue(string message){
-    print_blue(message+"\n");
+    println("\033[1;34m"+message+"\033[0m");
 }
 void println_magenta(string message){
-    print_magenta(message+"\n");
+    println("\033[1;35m"+message+"\033[0m");
 }
 void println_cyan(string message){
-    print_cyan(message+"\n");
+    println("\033[1;36m"+message+"\033[0m");
 }
 void println_white(string message){
-    print_white(message+"\n");
+    println("\033[1;37m"+message+"\033[0m");
 }
 
 string toUpper(string str){

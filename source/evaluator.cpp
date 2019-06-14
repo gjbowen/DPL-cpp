@@ -39,7 +39,7 @@ Lexeme* eval(Lexeme* tree, Lexeme* env){
 			// case FUNC_DEF: return evalFuncDef(tree,env);
 			// //imperative constructs
         case PRINT: return evalPrint(tree,env);
-        case PRINTLN: return evalPrintln(tree,env);
+        case PRINT_LN: return evalPrintln(tree,env);
 			// case WHILE: return evalWhile(tree,env);
 			// //function calls
 		case FUNCTION_CALL: return evalFuncCall(tree,env);

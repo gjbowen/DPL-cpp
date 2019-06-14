@@ -1,6 +1,6 @@
-//////////////////////
+/////////////////////////////////
 #include "../headers/parser.h" //
-//////////////////////
+/////////////////////////////////
 /*
 	NOTE: C++ has right to left implementation
 		  Clang apparently has a left to right
@@ -87,7 +87,6 @@ bool statementPending(){
 	return 
 	funcDefPending() 			||
 	printStatementPending() 	||
-	printlnStatementPending() 	||
 	ifStatementPending() 		||
 	incrementOnePending() 		||
 	decrementOnePending() 		||
@@ -100,8 +99,6 @@ Lexeme* statement(){
 		return funcDef();
 	else if(printStatementPending())
 		return printStatement();
-	else if(printlnStatementPending())
-		printlnStatement();
 	else if(ifStatementPending())
 		return ifStatement();
 	else if(whileStatementPending())
@@ -159,33 +156,17 @@ Lexeme* varExpr(){
 }
 ///////////////////////////////////////////////
 bool printStatementPending(){
-	return check(PRINT);
+	return check(PRINT)||check(PRINT_LN);
 }
 Lexeme* printStatement(){
     string color = current->strVal;
-	Lexeme* tree = cons(match(PRINT),NULL,NULL);
+	Lexeme* tree = cons(advance(),NULL,NULL);
 	tree->strVal = color;
 	match(OPEN_PAREN);
 	tree->right = expr();
 	match(CLOSE_PAREN);
 	match(SEMI);
 	return tree;
-}
-///////////////////////////////////////////////
-bool printlnStatementPending(){
-	return check(PRINTLN);
-}
-Lexeme* printlnStatement(){
-    string color = current->strVal;
-    Lexeme* tree = cons(match(PRINTLN),NULL,NULL);
-    tree->strVal = color;
-    match(OPEN_PAREN);
-    tree->right = expr();
-    match(CLOSE_PAREN);
-    match(SEMI);
-    cout<<"IN PARSER"<<endl;
-
-    return tree;
 }
 ///////////////////////////////////////////////
 Lexeme* expr(){
@@ -210,8 +191,6 @@ Lexeme* expr(){
 	}
 	return unaryTree;
 }
-
-
 bool unaryPending(){
 	return 
 	check(VARIABLE) ||
@@ -246,7 +225,6 @@ Lexeme* conditionExpr(){
 	Lexeme* expr2 = expr();
 	return cons(eq,expr1,expr2);
 }
-
 //////////////////////////////////////////////////////////////
 bool forStatementPending() {
 	return check(FOR);

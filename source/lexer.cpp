@@ -13,7 +13,7 @@ void getNextLine(){
 		ch=' ';
 	}
 	if(!done)
-	{	 
+	{
 		if(line.length() == 0||line=="\n"){
 			getNextLine();
 		}
@@ -31,13 +31,13 @@ void getChar(){
 	else if(!done)
 	{
 		if(line.length()==0)//done with the line
-			getNextLine();	
+			getNextLine();
 		if(!done)
-		{ 
+		{
 			ch = line[0];
 			cleanChar();
 			line = line.substr(1,line.length());
-			
+
 		}
 	}
 }
@@ -48,7 +48,7 @@ void cleanChar(){
 }
 
 void pushBack() {
-	if(chHasBeenPushed) 
+	if(chHasBeenPushed)
 	{
 		cout<<"TOO MANY PUSHBACKS!!"<<endl;
 		exit(1);
@@ -76,11 +76,11 @@ void skipWhiteSpace() {
 Lexeme* lex(){
 	getChar();
 
-	skipWhiteSpace(); 
+	skipWhiteSpace();
 
 	if(done)
-		return new Lexeme(END_OF_FILE, lineNumber); 
-	switch(ch) 
+		return new Lexeme(END_OF_FILE, lineNumber);
+	switch(ch)
 	{
 		case '(': return new Lexeme(OPEN_PAREN,lineNumber);
 		case ')': return new Lexeme(CLOSE_PAREN,lineNumber);
@@ -99,8 +99,8 @@ Lexeme* lex(){
 		default:
 
 		if (isdigit(ch))
-		{ 
-			return lexNumber(); 
+		{
+			return lexNumber();
 		}
 		else if(ch=='+')
 		{
@@ -170,12 +170,12 @@ Lexeme* lex(){
 		{
 			return lexVariableOrKeyword();
 		}
-		else if (ch == '"') 
+		else if (ch == '"')
 		{
-			return lexString(); 
+			return lexString();
 		}
 		else
-			return new Lexeme(UNKNOWN, lineNumber,ch); 
+			return new Lexeme(UNKNOWN, lineNumber,ch);
 	}
 }
 
@@ -207,11 +207,10 @@ Lexeme* lexVariableOrKeyword() {
             return new Lexeme(PRINT,lineNumber,toUpper(token).substr(6,token.length()));
     else if (isPrintln (toUpper(token)))
         if(token.length()==7){//just a println
-            cout<<"just a println in lexer.."<<endl;
-            return new Lexeme(PRINTLN,lineNumber);
+            return new Lexeme(PRINT_LN,lineNumber);
         }
         else //added color
-            return new Lexeme(PRINTLN,lineNumber,toUpper(token).substr(8,token.length()));
+            return new Lexeme(PRINT_LN,lineNumber,toUpper(token).substr(8,token.length()));
     //must be a variable!
 	return new Lexeme(VARIABLE,lineNumber,token);
 }
@@ -228,7 +227,6 @@ bool isPrint(string token) {
 }
 
 bool isPrintln(string token) {
-    cout<<"ITS A PRINTLN!!!"<<endl;
     return token == "PRINTLN" ||
            token == "PRINTLN_RED" ||
            token == "PRINTLN_GREEN" ||
@@ -270,7 +268,7 @@ Lexeme* lexNumber() {
 Lexeme* lexString() {
 	string token = "";
 	getChar();
-	while (ch!='"') 
+	while (ch!='"')
 	{
 		token = token + ch;
 		getChar();
