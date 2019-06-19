@@ -20,7 +20,11 @@ int lineNumber=0;
 int main(int argc, char *args[]){
     /////////////////////////////////////////
     cout<<"starting.."<<endl;
-    string mode = "evaluator";
+	string mode;
+    if(argc==2)
+	    mode = args[1];
+    else
+	    mode = "evaluator";
     /////////////////////////////////////////
     myfile.open("example.txt");
     getNextLine();

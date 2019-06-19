@@ -26,7 +26,7 @@ headers:
 
 # Run
 #
-run:
+run: clear
 	./main.out
 
 # Show tokens

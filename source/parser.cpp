@@ -179,7 +179,6 @@ Lexeme* expr(){
 		Lexeme* tree =  cons(opTree,unaryTree,exprTree);
 		return tree;
 	}
-
 	else if(check(OPEN_PAREN)) //function calls
 	{
 		match(OPEN_PAREN);
@@ -365,26 +364,26 @@ Lexeme* decrement() {
 	return tree;
 }
 
-///////////////////////////////////////
-///////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 //essentially the driver for Parser
 Lexeme* parse() {
 	current = lex();
-	Lexeme* tree = program();
-	return tree;
-}//first helper function in the Parser/Parser
+	return program();
+}
+//first helper function in the Parser/Parser
 Lexeme* advance(){
 	Lexeme* oldLexeme = current;
 	current=lex(); //get the next	
-	//System.out.println(current.type);
 	return oldLexeme;
 }
 //like advance but forces the current lexeme to be matched
 Lexeme* match(lexeme_type type) { 
 	if(type==ANYTHING)
 		return advance();
-	matchNoAdvance(type); //MAY be optional. unknown..
-	return advance(); 
+	matchNoAdvance(type);
+	return advance();
 }
 
 bool check(lexeme_type type){
@@ -393,9 +392,9 @@ bool check(lexeme_type type){
 
 void matchNoAdvance(lexeme_type type){
 	if (!check(type)){
-		print_red("Syntax.Error");
-		print_red("\tExpected: "+index_to_string(stoi(to_string(type))));
-		print_red("\tActual: "+current->type_to_string());
+		println_red("Syntax.Error");
+		println_red("\tExpected: "+index_to_string(stoi(to_string(type))));
+		println_red("\tActual: "+current->type_to_string());
 		exit(EXIT_FAILURE);
 	}
 }
