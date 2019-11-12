@@ -58,7 +58,8 @@ void pushBack() {
 }
 
 void skipWhiteSpace() {
-	if(!done){
+	if(!done)
+	{
 		if(ch=='#')
 		{
 			getNextLine();
@@ -206,9 +207,8 @@ Lexeme* lexVariableOrKeyword() {
         else //added color
             return new Lexeme(PRINT,lineNumber,toUpper(token).substr(6,token.length()));
     else if (isPrintln (toUpper(token)))
-        if(token.length()==7){//just a println
+        if(token.length()==7)//just a println
             return new Lexeme(PRINT_LN,lineNumber);
-        }
         else //added color
             return new Lexeme(PRINT_LN,lineNumber,toUpper(token).substr(8,token.length()));
     //must be a variable!

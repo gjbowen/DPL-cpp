@@ -1,5 +1,9 @@
 #include "../headers/evaluator.h"
 
+
+//////////////
+// DISPATCH //
+//////////////
 Lexeme* eval(Lexeme* tree, Lexeme* env){
 	switch (tree->type)
 	{
@@ -76,6 +80,9 @@ Lexeme* evalFuncCall(Lexeme* tree,Lexeme* env){
 	return eval(body,env);
 }
 
+///////////
+// Block //
+///////////
 Lexeme* evalBlock(Lexeme* tree,Lexeme* env){
 	while(tree){
 		eval(tree->left,env);
@@ -84,6 +91,9 @@ Lexeme* evalBlock(Lexeme* tree,Lexeme* env){
 	return NULL;
 }
 
+///////////////////
+// Function Args //
+///////////////////
 Lexeme* evalArgs(Lexeme* tree,Lexeme* env){
 	if(tree)
 		return cons(JOIN,eval(tree->left,env),evalArgs(tree->right,env));
@@ -91,9 +101,9 @@ Lexeme* evalArgs(Lexeme* tree,Lexeme* env){
 		return NULL;
 }
 
-//
-// MATH OPERATIONS
-//
+/////////////////////
+// MATH OPERATIONS //
+/////////////////////
 Lexeme* evalPlus(Lexeme* tree, Lexeme* env){
 	Lexeme* val = eval(tree->left,env);
 	Lexeme* result = eval(tree->right,env);
@@ -223,6 +233,10 @@ Lexeme* evalDecrement(Lexeme* tree, Lexeme* env){
 	}
 	return val;
 }
+
+///////////
+// Print //
+///////////
 Lexeme* evalPrint(Lexeme* tree, Lexeme* env){
     string color = tree->strVal;
     tree = tree->right;
@@ -246,6 +260,10 @@ Lexeme* evalPrint(Lexeme* tree, Lexeme* env){
         print(tokens);
     return NULL;
 }
+
+////////////////
+// Print Line //
+////////////////
 Lexeme* evalPrintln(Lexeme* tree, Lexeme* env){
     string color = tree->strVal;
     tree = tree->right;
@@ -269,6 +287,10 @@ Lexeme* evalPrintln(Lexeme* tree, Lexeme* env){
         println(tokens);
     return NULL;
 }
+
+////////////////
+// Assignment //
+////////////////
 Lexeme* evalAssign(Lexeme* tree, Lexeme* env){
 	Lexeme* var = tree->left;
 	Lexeme* val = eval(tree->right,env);
